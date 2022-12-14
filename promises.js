@@ -105,7 +105,7 @@ const updateLastUserActivityTime = new Promise((resolve,reject) => {
 // deletePost().then(getPosts).catch(error => console.log(error));
 // deletePost().then(getPosts).catch(error => console.log(error));
 
-Promise.all([createPost({title: 'Post 3', body: 'This is post Three'}),updateLastUserActivityTime]).then(() => {
+Promise.all([createPost({title: 'Post 3', body: 'This is post Three'}),create4Post({title: 'Post 4', body: 'This is post four'}),updateLastUserActivityTime]).then(() => {
     getPosts(),
     setTimeout(() => {
         deletePost().then(() => {getPosts()})
