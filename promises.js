@@ -63,29 +63,51 @@ function deletePost(){
             else{
                 reject('Array is Empty');
             }
-        },5000)
+        },2000)
     })
 }
 
+const updateLastUserActivityTime = new Promise((resolve,reject) => {
+    setInterval(() => {
+        posts.forEach((post,index) => {
+            console.log(post.title,((new Date().getTime() - post.createdAt)/1000));
+        })
+        const error = false;
+        if(!error){
+            resolve();
+        }
+        else{
+            reject();
+        }
+},1000);
+})
 
-createPost({title: 'Post 3', body: 'This is post Three'}).then(() => {
-    getPosts(),
-    deletePost().then(() => {
-        getPosts()
-    })
-}).catch(error => console.log(error));
 
 
-create4Post({title: 'Post 4', body: 'This is post four'}).then(() => {
-    getPosts();
-    setTimeout(() => {
-        deletePost().then(() => {
-        getPosts()
-    })},1000)
+// createPost({title: 'Post 3', body: 'This is post Three'}).then(() => {
+//     getPosts(),
+//     deletePost().then(() => {
+//         getPosts()
+//     })
+// }).catch(error => console.log(error));
+
+
+// create4Post({title: 'Post 4', body: 'This is post four'}).then(() => {
+//     getPosts();
+//     setTimeout(() => {
+//         deletePost().then(() => {
+//         getPosts()
+//     })},1000)
     
-}).catch(error => console.log(error));
+// }).catch(error => console.log(error));
 
-deletePost().then(getPosts).catch(error => console.log(error));
-deletePost().then(getPosts).catch(error => console.log(error));
-deletePost().then(getPosts).catch(error => console.log(error));
+// deletePost().then(getPosts).catch(error => console.log(error));
+// deletePost().then(getPosts).catch(error => console.log(error));
+// deletePost().then(getPosts).catch(error => console.log(error));
 
+Promise.all([createPost({title: 'Post 3', body: 'This is post Three'}),updateLastUserActivityTime]).then(() => {
+    getPosts(),
+    setTimeout(() => {
+        deletePost().then(() => {getPosts()})
+    },1000)
+});
