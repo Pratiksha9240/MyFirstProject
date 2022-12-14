@@ -39,7 +39,7 @@ let post1 = async() => {
         })
     }
     
-    function create4Post(post,callback){
+    function create4Post(post){
         return new Promise((resolve,reject) => {
             setTimeout(() => {
                 posts.push({...post, createdAt: new Date().getTime()});
@@ -56,8 +56,7 @@ let post1 = async() => {
         })
     }
     
-    function deletePost(){
-        return new Promise((resolve,reject) => {
+    const deletePost = new Promise((resolve,reject) => {
             let count = posts.length;
             posts.pop();
             setTimeout(() => {
@@ -69,7 +68,7 @@ let post1 = async() => {
                 }
             },2000)
         })
-    }
+    
     
     const updateLastUserActivityTime = new Promise((resolve,reject) => {
         setInterval(() => {
@@ -85,17 +84,17 @@ let post1 = async() => {
             }
     },1000);
     })
-    
-    await getPosts;
 
+    await Promise.all([createPost({title: 'Post 3', body: 'This is post Three'}),createPost({title: 'Post 5', body: 'This is post 5'})
+    ,createPost({title: 'Post 6', body: 'This is post 6'}),create4Post({title: 'Post 4', body: 'This is post four'}),updateLastUserActivityTime]);
 
+    let del = await deletePost;
+    return del;
     
-    await Promise.all([createPost({title: 'Post 3', body: 'This is post Three'}),create4Post({title: 'Post 4', body: 'This is post four'}),updateLastUserActivityTime]);
 }
 
-post1().then(() => {
-    getPosts(),
+post1().then((d) => {
     setTimeout(() => {
-        deletePost().then(() => {getPosts()})
-    },5000)
+        d;
+    },5000);
 });
